@@ -8,7 +8,7 @@ class TagService:
     def create_tag(self, tag_data: dict):
         cursor = self.db.get_cursor()
         try:
-            sql = "INSERT INTO tags (name) VALUES (:1)"
+            sql = "INSERT INTO TAG (name) VALUES (:1)"
             cursor.execute(sql, (tag_data['name'],))
             self.db.connection.commit()
             return True
@@ -21,7 +21,7 @@ class TagService:
     def get_tag_by_id(self, tag_id: int):
         cursor = self.db.get_cursor()
         try:
-            sql = "SELECT tag_id, name FROM tags WHERE tag_id = :1"
+            sql = "SELECT tag_id, name FROM TAG WHERE tag_id = :1"
             cursor.execute(sql, (tag_id,))
             row = cursor.fetchone()
             if row:
@@ -36,7 +36,7 @@ class TagService:
     def get_all_tags(self):
         cursor = self.db.get_cursor()
         try:
-            sql = "SELECT tag_id, name FROM tags"
+            sql = "SELECT tag_id, name FROM TAG"
             cursor.execute(sql)
             rows = cursor.fetchall()
             return [Tag(*row) for row in rows]
@@ -49,7 +49,7 @@ class TagService:
     def add_story_tag(self, story_id: int, tag_id: int):
         cursor = self.db.get_cursor()
         try:
-            sql = "INSERT INTO story_tags (story_id, tag_id) VALUES (:1, :2)"
+            sql = "INSERT INTO STORY_TAG (story_id, tag_id) VALUES (:1, :2)"
             cursor.execute(sql, (story_id, tag_id))
             self.db.connection.commit()
             return True
@@ -62,7 +62,7 @@ class TagService:
     def remove_story_tag(self, story_id: int, tag_id: int):
         cursor = self.db.get_cursor()
         try:
-            sql = "DELETE FROM story_tags WHERE story_id = :1 AND tag_id = :2"
+            sql = "DELETE FROM STORY_TAG WHERE story_id = :1 AND tag_id = :2"
             cursor.execute(sql, (story_id, tag_id))
             self.db.connection.commit()
             return cursor.rowcount > 0
@@ -75,8 +75,8 @@ class TagService:
     def get_story_tags(self, story_id: int):
         cursor = self.db.get_cursor()
         try:
-            sql = """SELECT t.tag_id, t.name FROM tags t 
-                     JOIN story_tags st ON t.tag_id = st.tag_id 
+            sql = """SELECT t.tag_id, t.name FROM TAG t 
+                     JOIN STORY_TAG st ON t.tag_id = st.tag_id 
                      WHERE st.story_id = :1"""
             cursor.execute(sql, (story_id,))
             rows = cursor.fetchall()
@@ -90,7 +90,7 @@ class TagService:
     def get_stories_by_tag(self, tag_id: int):
         cursor = self.db.get_cursor()
         try:
-            sql = """SELECT story_id FROM story_tags WHERE tag_id = :1"""
+            sql = """SELECT story_id FROM STORY_TAG WHERE tag_id = :1"""
             cursor.execute(sql, (tag_id,))
             rows = cursor.fetchall()
             return [row[0] for row in rows]

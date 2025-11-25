@@ -9,7 +9,7 @@ class StoryService:
     def create_story(self, story_data: dict):
         cursor = self.db.get_cursor()
         try:
-            sql = "INSERT INTO stories (user_id, image_url, content, latitude, longitude, created_at) VALUES (:1, :2, :3, :4, :5, :6)"
+            sql = "INSERT INTO STORY (user_id, image_url, content, latitude, longitude, created_at) VALUES (:1, :2, :3, :4, :5, :6)"
             cursor.execute(sql, (story_data['user_id'], story_data['image_url'], 
                                story_data['content'], story_data['latitude'], 
                                story_data['longitude'], datetime.now()))
@@ -24,7 +24,7 @@ class StoryService:
     def get_story_by_id(self, story_id: int):
         cursor = self.db.get_cursor()
         try:
-            sql = "SELECT story_id, user_id, image_url, content, latitude, longitude, likes, created_at FROM stories WHERE story_id = :1"
+            sql = "SELECT story_id, user_id, image_url, content, latitude, longitude, likes, created_at FROM STORY WHERE story_id = :1"
             cursor.execute(sql, (story_id,))
             row = cursor.fetchone()
             if row:
@@ -39,7 +39,7 @@ class StoryService:
     def get_stories_by_user(self, user_id: int):
         cursor = self.db.get_cursor()
         try:
-            sql = "SELECT story_id, user_id, image_url, content, latitude, longitude, likes, created_at FROM stories WHERE user_id = :1"
+            sql = "SELECT story_id, user_id, image_url, content, latitude, longitude, likes, created_at FROM STORY WHERE user_id = :1"
             cursor.execute(sql, (user_id,))
             rows = cursor.fetchall()
             return [Story(*row) for row in rows]
@@ -53,7 +53,7 @@ class StoryService:
         cursor = self.db.get_cursor()
         try:
             sql = """SELECT story_id, user_id, image_url, content, latitude, longitude, likes, created_at 
-                     FROM stories 
+                     FROM STORY 
                      WHERE SQRT(POWER(latitude - :1, 2) + POWER(longitude - :2, 2)) <= :3"""
             cursor.execute(sql, (latitude, longitude, radius))
             rows = cursor.fetchall()
@@ -67,7 +67,7 @@ class StoryService:
     def update_story(self, story_id: int, story_data: dict):
         cursor = self.db.get_cursor()
         try:
-            sql = "UPDATE stories SET content = :1, image_url = :2 WHERE story_id = :3"
+            sql = "UPDATE STORY SET content = :1, image_url = :2 WHERE story_id = :3"
             cursor.execute(sql, (story_data['content'], story_data['image_url'], story_id))
             self.db.connection.commit()
             return cursor.rowcount > 0
@@ -80,7 +80,7 @@ class StoryService:
     def delete_story(self, story_id: int):
         cursor = self.db.get_cursor()
         try:
-            sql = "DELETE FROM stories WHERE story_id = :1"
+            sql = "DELETE FROM STORY WHERE story_id = :1"
             cursor.execute(sql, (story_id,))
             self.db.connection.commit()
             return cursor.rowcount > 0
@@ -93,8 +93,8 @@ class StoryService:
     def update_likes_count(self, story_id: int):
         cursor = self.db.get_cursor()
         try:
-            sql = """UPDATE stories SET likes = (
-                        SELECT COUNT(*) FROM likes WHERE story_id = :1
+            sql = """UPDATE STORY SET likes = (
+                        SELECT COUNT(*) FROM LIKE_T WHERE story_id = :1
                      ) WHERE story_id = :1"""
             cursor.execute(sql, (story_id,))
             self.db.connection.commit()

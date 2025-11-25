@@ -9,7 +9,7 @@ class PlaceService:
     def create_place(self, place_data: dict):
         cursor = self.db.get_cursor()
         try:
-            sql = "INSERT INTO places (name, latitude, longitude, created_at) VALUES (:1, :2, :3, :4)"
+            sql = "INSERT INTO PLACE (name, latitude, longitude, created_at) VALUES (:1, :2, :3, :4)"
             cursor.execute(sql, (place_data['name'], place_data['latitude'], 
                                place_data['longitude'], datetime.now()))
             self.db.connection.commit()
@@ -23,7 +23,7 @@ class PlaceService:
     def get_place_by_id(self, place_id: int):
         cursor = self.db.get_cursor()
         try:
-            sql = "SELECT place_id, name, average_rating, latitude, longitude, created_at FROM places WHERE place_id = :1"
+            sql = "SELECT place_id, name, average_rating, latitude, longitude, created_at FROM PLACE WHERE place_id = :1"
             cursor.execute(sql, (place_id,))
             row = cursor.fetchone()
             if row:
@@ -39,7 +39,7 @@ class PlaceService:
         cursor = self.db.get_cursor()
         try:
             sql = """SELECT place_id, name, average_rating, latitude, longitude, created_at 
-                     FROM places 
+                     FROM PLACE 
                      WHERE SQRT(POWER(latitude - :1, 2) + POWER(longitude - :2, 2)) <= :3"""
             cursor.execute(sql, (latitude, longitude, radius))
             rows = cursor.fetchall()
@@ -53,7 +53,7 @@ class PlaceService:
     def update_place(self, place_id: int, place_data: dict):
         cursor = self.db.get_cursor()
         try:
-            sql = "UPDATE places SET name = :1, latitude = :2, longitude = :3 WHERE place_id = :4"
+            sql = "UPDATE PLACE SET name = :1, latitude = :2, longitude = :3 WHERE place_id = :4"
             cursor.execute(sql, (place_data['name'], place_data['latitude'], 
                                place_data['longitude'], place_id))
             self.db.connection.commit()
@@ -67,7 +67,7 @@ class PlaceService:
     def delete_place(self, place_id: int):
         cursor = self.db.get_cursor()
         try:
-            sql = "DELETE FROM places WHERE place_id = :1"
+            sql = "DELETE FROM PLACE WHERE place_id = :1"
             cursor.execute(sql, (place_id,))
             self.db.connection.commit()
             return cursor.rowcount > 0
@@ -80,8 +80,8 @@ class PlaceService:
     def update_average_rating(self, place_id: int):
         cursor = self.db.get_cursor()
         try:
-            sql = """UPDATE places SET average_rating = (
-                        SELECT AVG(rating) FROM reviews WHERE place_id = :1
+            sql = """UPDATE PLACE SET average_rating = (
+                        SELECT AVG(rating) FROM REVIEW WHERE place_id = :1
                      ) WHERE place_id = :1"""
             cursor.execute(sql, (place_id,))
             self.db.connection.commit()

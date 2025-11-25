@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional
 
-class User:
+class User_t:
     def __init__(self, user_id: Optional[int] = None, id: str = None, password: str = None, 
                  name: Optional[str] = None, email: Optional[str] = None, 
                  created_at: Optional[datetime] = None):

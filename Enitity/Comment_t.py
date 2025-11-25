@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional
 
-class Comment:
+class Comment_t:
     def __init__(self, comment_id: Optional[int] = None, user_id: Optional[int] = None, 
                  review_id: int = None, content: str = None, 
                  created_at: Optional[datetime] = None):
