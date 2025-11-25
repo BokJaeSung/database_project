@@ -1,29 +1,88 @@
 from database import db_connection
+from Enitity.Comment_t import Comment
+from datetime import datetime
 
 class CommentService:
     def __init__(self):
         self.db = db_connection
     
-    def create_comment(self, comment_data):
-        # TODO: 댓글 생성 로직 구현
-        pass
+    def create_comment(self, comment_data: dict):
+        cursor = self.db.get_cursor()
+        try:
+            sql = "INSERT INTO comments (user_id, review_id, content, created_at) VALUES (:1, :2, :3, :4)"
+            cursor.execute(sql, (comment_data['user_id'], comment_data['review_id'], 
+                               comment_data['content'], datetime.now()))
+            self.db.connection.commit()
+            return True
+        except Exception as e:
+            print(f"Error creating comment: {e}")
+            return False
+        finally:
+            cursor.close()
     
-    def get_comment_by_id(self, comment_id):
-        # TODO: ID로 댓글 조회 로직 구현
-        pass
+    def get_comment_by_id(self, comment_id: int):
+        cursor = self.db.get_cursor()
+        try:
+            sql = "SELECT comment_id, user_id, review_id, content, created_at FROM comments WHERE comment_id = :1"
+            cursor.execute(sql, (comment_id,))
+            row = cursor.fetchone()
+            if row:
+                return Comment(*row)
+            return None
+        except Exception as e:
+            print(f"Error getting comment: {e}")
+            return None
+        finally:
+            cursor.close()
     
-    def get_comments_by_review(self, review_id):
-        # TODO: 리뷰별 댓글 조회 로직 구현
-        pass
+    def get_comments_by_review(self, review_id: int):
+        cursor = self.db.get_cursor()
+        try:
+            sql = "SELECT comment_id, user_id, review_id, content, created_at FROM comments WHERE review_id = :1"
+            cursor.execute(sql, (review_id,))
+            rows = cursor.fetchall()
+            return [Comment(*row) for row in rows]
+        except Exception as e:
+            print(f"Error getting comments by review: {e}")
+            return []
+        finally:
+            cursor.close()
     
-    def get_comments_by_user(self, user_id):
-        # TODO: 사용자별 댓글 조회 로직 구현
-        pass
+    def get_comments_by_user(self, user_id: int):
+        cursor = self.db.get_cursor()
+        try:
+            sql = "SELECT comment_id, user_id, review_id, content, created_at FROM comments WHERE user_id = :1"
+            cursor.execute(sql, (user_id,))
+            rows = cursor.fetchall()
+            return [Comment(*row) for row in rows]
+        except Exception as e:
+            print(f"Error getting comments by user: {e}")
+            return []
+        finally:
+            cursor.close()
     
-    def update_comment(self, comment_id, comment_data):
-        # TODO: 댓글 수정 로직 구현
-        pass
+    def update_comment(self, comment_id: int, comment_data: dict):
+        cursor = self.db.get_cursor()
+        try:
+            sql = "UPDATE comments SET content = :1 WHERE comment_id = :2"
+            cursor.execute(sql, (comment_data['content'], comment_id))
+            self.db.connection.commit()
+            return cursor.rowcount > 0
+        except Exception as e:
+            print(f"Error updating comment: {e}")
+            return False
+        finally:
+            cursor.close()
     
-    def delete_comment(self, comment_id):
-        # TODO: 댓글 삭제 로직 구현
-        pass
+    def delete_comment(self, comment_id: int):
+        cursor = self.db.get_cursor()
+        try:
+            sql = "DELETE FROM comments WHERE comment_id = :1"
+            cursor.execute(sql, (comment_id,))
+            self.db.connection.commit()
+            return cursor.rowcount > 0
+        except Exception as e:
+            print(f"Error deleting comment: {e}")
+            return False
+        finally:
+            cursor.close()
