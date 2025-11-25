@@ -6,6 +6,7 @@ class StoryService:
     def __init__(self):
         self.db = db_connection
     
+    # 새 스토리 생성
     def create_story(self, story_data: dict):
         cursor = self.db.get_cursor()
         try:
@@ -21,6 +22,7 @@ class StoryService:
         finally:
             cursor.close()
     
+    # 스토리 ID로 스토리 조회
     def get_story_by_id(self, story_id: int):
         cursor = self.db.get_cursor()
         try:
@@ -36,6 +38,7 @@ class StoryService:
         finally:
             cursor.close()
     
+    # 사용자별 스토리 목록 조회
     def get_stories_by_user(self, user_id: int):
         cursor = self.db.get_cursor()
         try:
@@ -49,6 +52,7 @@ class StoryService:
         finally:
             cursor.close()
     
+    # 위치 기반 스토리 검색
     def get_stories_by_location(self, latitude: float, longitude: float, radius: float = 1.0):
         cursor = self.db.get_cursor()
         try:
@@ -64,6 +68,7 @@ class StoryService:
         finally:
             cursor.close()
     
+    # 스토리 정보 수정
     def update_story(self, story_id: int, story_data: dict):
         cursor = self.db.get_cursor()
         try:
@@ -77,6 +82,7 @@ class StoryService:
         finally:
             cursor.close()
     
+    # 스토리 삭제
     def delete_story(self, story_id: int):
         cursor = self.db.get_cursor()
         try:
@@ -90,6 +96,7 @@ class StoryService:
         finally:
             cursor.close()
     
+    # 스토리 좋아요 수 업데이트
     def update_likes_count(self, story_id: int):
         cursor = self.db.get_cursor()
         try:

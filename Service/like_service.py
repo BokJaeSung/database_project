@@ -6,6 +6,7 @@ class LikeService:
     def __init__(self):
         self.db = db_connection
     
+    # 좋아요 토글 (추가/제거)
     def toggle_like(self, user_id: int, story_id: int):
         cursor = self.db.get_cursor()
         try:
@@ -31,6 +32,7 @@ class LikeService:
         finally:
             cursor.close()
     
+    # 스토리의 좋아요 목록 조회
     def get_story_likes(self, story_id: int):
         cursor = self.db.get_cursor()
         try:
@@ -44,6 +46,7 @@ class LikeService:
         finally:
             cursor.close()
     
+    # 사용자의 좋아요 목록 조회
     def get_user_likes(self, user_id: int):
         cursor = self.db.get_cursor()
         try:
@@ -57,6 +60,7 @@ class LikeService:
         finally:
             cursor.close()
     
+    # 스토리의 좋아요 수 조회
     def get_likes_count(self, story_id: int):
         cursor = self.db.get_cursor()
         try:
@@ -69,6 +73,7 @@ class LikeService:
         finally:
             cursor.close()
     
+    # 사용자가 스토리에 좋아요를 눌렀는지 확인
     def is_liked_by_user(self, user_id: int, story_id: int):
         cursor = self.db.get_cursor()
         try:

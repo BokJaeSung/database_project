@@ -6,6 +6,7 @@ class CommentService:
     def __init__(self):
         self.db = db_connection
     
+    # 새 댓글 생성
     def create_comment(self, comment_data: dict):
         cursor = self.db.get_cursor()
         try:
@@ -20,6 +21,7 @@ class CommentService:
         finally:
             cursor.close()
     
+    # 댓글 ID로 댓글 조회
     def get_comment_by_id(self, comment_id: int):
         cursor = self.db.get_cursor()
         try:
@@ -35,6 +37,7 @@ class CommentService:
         finally:
             cursor.close()
     
+    # 리뷰별 댓글 목록 조회
     def get_comments_by_review(self, review_id: int):
         cursor = self.db.get_cursor()
         try:
@@ -48,6 +51,7 @@ class CommentService:
         finally:
             cursor.close()
     
+    # 사용자별 댓글 목록 조회
     def get_comments_by_user(self, user_id: int):
         cursor = self.db.get_cursor()
         try:
@@ -61,6 +65,7 @@ class CommentService:
         finally:
             cursor.close()
     
+    # 댓글 내용 수정
     def update_comment(self, comment_id: int, comment_data: dict):
         cursor = self.db.get_cursor()
         try:
@@ -74,6 +79,7 @@ class CommentService:
         finally:
             cursor.close()
     
+    # 댓글 삭제
     def delete_comment(self, comment_id: int):
         cursor = self.db.get_cursor()
         try:

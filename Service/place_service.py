@@ -6,6 +6,7 @@ class PlaceService:
     def __init__(self):
         self.db = db_connection
     
+    # 새 장소 생성
     def create_place(self, place_data: dict):
         cursor = self.db.get_cursor()
         try:
@@ -20,6 +21,7 @@ class PlaceService:
         finally:
             cursor.close()
     
+    # 장소 ID로 장소 조회
     def get_place_by_id(self, place_id: int):
         cursor = self.db.get_cursor()
         try:
@@ -35,6 +37,7 @@ class PlaceService:
         finally:
             cursor.close()
     
+    # 위치 기반 장소 검색
     def get_places_by_location(self, latitude: float, longitude: float, radius: float = 1.0):
         cursor = self.db.get_cursor()
         try:
@@ -50,6 +53,7 @@ class PlaceService:
         finally:
             cursor.close()
     
+    # 장소 정보 수정
     def update_place(self, place_id: int, place_data: dict):
         cursor = self.db.get_cursor()
         try:
@@ -64,6 +68,7 @@ class PlaceService:
         finally:
             cursor.close()
     
+    # 장소 삭제
     def delete_place(self, place_id: int):
         cursor = self.db.get_cursor()
         try:
@@ -77,6 +82,7 @@ class PlaceService:
         finally:
             cursor.close()
     
+    # 장소 평균 평점 업데이트
     def update_average_rating(self, place_id: int):
         cursor = self.db.get_cursor()
         try:

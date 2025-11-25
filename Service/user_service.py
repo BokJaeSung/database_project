@@ -6,6 +6,7 @@ class UserService:
     def __init__(self):
         self.db = db_connection
     
+    # 새 사용자 생성
     def create_user(self, user_data: dict):
         cursor = self.db.get_cursor()
         try:
@@ -20,6 +21,7 @@ class UserService:
         finally:
             cursor.close()
     
+    # 사용자 ID로 사용자 조회
     def get_user_by_id(self, user_id: int):
         cursor = self.db.get_cursor()
         try:
@@ -35,6 +37,7 @@ class UserService:
         finally:
             cursor.close()
     
+    # 로그인 ID로 사용자 조회
     def get_user_by_login_id(self, login_id: str):
         cursor = self.db.get_cursor()
         try:
@@ -50,6 +53,7 @@ class UserService:
         finally:
             cursor.close()
     
+    # 사용자 정보 수정
     def update_user(self, user_id: int, user_data: dict):
         cursor = self.db.get_cursor()
         try:
@@ -63,6 +67,7 @@ class UserService:
         finally:
             cursor.close()
     
+    # 사용자 삭제
     def delete_user(self, user_id: int):
         cursor = self.db.get_cursor()
         try:
@@ -76,6 +81,7 @@ class UserService:
         finally:
             cursor.close()
     
+    # 사용자 인증 (로그인)
     def authenticate_user(self, login_id: str, password: str):
         user = self.get_user_by_login_id(login_id)
         if user and user.password == password:

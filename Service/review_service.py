@@ -6,6 +6,7 @@ class ReviewService:
     def __init__(self):
         self.db = db_connection
     
+    # 새 리뷰 생성
     def create_review(self, review_data: dict):
         cursor = self.db.get_cursor()
         try:
@@ -21,6 +22,7 @@ class ReviewService:
         finally:
             cursor.close()
     
+    # 리뷰 ID로 리뷰 조회
     def get_review_by_id(self, review_id: int):
         cursor = self.db.get_cursor()
         try:
@@ -36,6 +38,7 @@ class ReviewService:
         finally:
             cursor.close()
     
+    # 장소별 리뷰 목록 조회
     def get_reviews_by_place(self, place_id: int):
         cursor = self.db.get_cursor()
         try:
@@ -49,6 +52,7 @@ class ReviewService:
         finally:
             cursor.close()
     
+    # 사용자별 리뷰 목록 조회
     def get_reviews_by_user(self, user_id: int):
         cursor = self.db.get_cursor()
         try:
@@ -62,6 +66,7 @@ class ReviewService:
         finally:
             cursor.close()
     
+    # 리뷰 정보 수정
     def update_review(self, review_id: int, review_data: dict):
         cursor = self.db.get_cursor()
         try:
@@ -76,6 +81,7 @@ class ReviewService:
         finally:
             cursor.close()
     
+    # 리뷰 삭제
     def delete_review(self, review_id: int):
         cursor = self.db.get_cursor()
         try:

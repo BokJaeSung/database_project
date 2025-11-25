@@ -5,6 +5,7 @@ class TagService:
     def __init__(self):
         self.db = db_connection
     
+    # 새 태그 생성
     def create_tag(self, tag_data: dict):
         cursor = self.db.get_cursor()
         try:
@@ -18,6 +19,7 @@ class TagService:
         finally:
             cursor.close()
     
+    # 태그 ID로 태그 조회
     def get_tag_by_id(self, tag_id: int):
         cursor = self.db.get_cursor()
         try:
@@ -33,6 +35,7 @@ class TagService:
         finally:
             cursor.close()
     
+    # 모든 태그 목록 조회
     def get_all_tags(self):
         cursor = self.db.get_cursor()
         try:
@@ -46,6 +49,7 @@ class TagService:
         finally:
             cursor.close()
     
+    # 스토리에 태그 추가
     def add_story_tag(self, story_id: int, tag_id: int):
         cursor = self.db.get_cursor()
         try:
@@ -59,6 +63,7 @@ class TagService:
         finally:
             cursor.close()
     
+    # 스토리에서 태그 제거
     def remove_story_tag(self, story_id: int, tag_id: int):
         cursor = self.db.get_cursor()
         try:
@@ -72,6 +77,7 @@ class TagService:
         finally:
             cursor.close()
     
+    # 스토리의 태그 목록 조회
     def get_story_tags(self, story_id: int):
         cursor = self.db.get_cursor()
         try:
@@ -87,6 +93,7 @@ class TagService:
         finally:
             cursor.close()
     
+    # 태그별 스토리 ID 목록 조회
     def get_stories_by_tag(self, tag_id: int):
         cursor = self.db.get_cursor()
         try:
