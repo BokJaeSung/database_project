@@ -1,33 +1,52 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
+from pydantic import BaseModel
 from Service.comment_service import CommentService
 
 router = APIRouter(prefix="/comments", tags=["comments"])
+comment_service = CommentService()
 
-class CommentController:
-    def __init__(self):
-        self.comment_service = CommentService()
-    
-    @router.post("")
-    def create_comment(self):
-        # TODO: 댓글 생성 컨트롤러 로직 구현
-        pass
-    
-    @router.get("/review/{review_id}")
-    def get_review_comments(self, review_id: int):
-        # TODO: 리뷰별 댓글 조회 컨트롤러 로직 구현
-        pass
-    
-    @router.get("/user/{user_id}")
-    def get_user_comments(self, user_id: int):
-        # TODO: 사용자별 댓글 조회 컨트롤러 로직 구현
-        pass
-    
-    @router.put("/{comment_id}")
-    def update_comment(self, comment_id: int):
-        # TODO: 댓글 수정 컨트롤러 로직 구현
-        pass
-    
-    @router.delete("/{comment_id}")
-    def delete_comment(self, comment_id: int):
-        # TODO: 댓글 삭제 컨트롤러 로직 구현
-        pass
+class CommentCreate(BaseModel):
+    user_id: int
+    review_id: int
+    content: str
+
+class CommentUpdate(BaseModel):
+    content: str
+
+@router.post("")
+def create_comment(comment_data: CommentCreate):
+    result = comment_service.create_comment(comment_data.model_dump())
+    if result:
+        return {"message": "Comment created successfully"}
+    raise HTTPException(status_code=400, detail="Failed to create comment")
+
+@router.get("/{comment_id}")
+def get_comment_details(comment_id: int):
+    comment = comment_service.get_comment_by_id(comment_id)
+    if comment:
+        return comment.__dict__
+    raise HTTPException(status_code=404, detail="Comment not found")
+
+@router.get("/review/{review_id}")
+def get_review_comments(review_id: int):
+    comments = comment_service.get_comments_by_review(review_id)
+    return [comment.__dict__ for comment in comments]
+
+@router.get("/user/{user_id}")
+def get_user_comments(user_id: int):
+    comments = comment_service.get_comments_by_user(user_id)
+    return [comment.__dict__ for comment in comments]
+
+@router.put("/{comment_id}")
+def update_comment(comment_id: int, comment_data: CommentUpdate):
+    result = comment_service.update_comment(comment_id, comment_data.model_dump())
+    if result:
+        return {"message": "Comment updated successfully"}
+    raise HTTPException(status_code=404, detail="Comment not found")
+
+@router.delete("/{comment_id}")
+def delete_comment(comment_id: int):
+    result = comment_service.delete_comment(comment_id)
+    if result:
+        return {"message": "Comment deleted successfully"}
+    raise HTTPException(status_code=404, detail="Comment not found")
