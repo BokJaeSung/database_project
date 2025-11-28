@@ -21,8 +21,8 @@ class LikeService:
                 cursor.execute(sql, (user_id, story_id))
             else:
                 # 좋아요 추가
-                sql = "INSERT INTO LIKE_T (user_id, story_id, created_at) VALUES (:1, :2, :3)"
-                cursor.execute(sql, (user_id, story_id, datetime.now()))
+                sql = "INSERT INTO LIKE_T (user_id, story_id) VALUES (:1, :2)"
+                cursor.execute(sql, (user_id, story_id))
             
             self.db.connection.commit()
             return not exists  # 추가되었으면 True, 제거되었으면 False

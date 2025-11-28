@@ -10,9 +10,9 @@ class PlaceService:
     def create_place(self, place_data: dict):
         cursor = self.db.get_cursor()
         try:
-            sql = "INSERT INTO PLACE (name, latitude, longitude, created_at) VALUES (:1, :2, :3, :4)"
+            sql = "INSERT INTO PLACE (place_id, name, latitude, longitude) VALUES (PLACE_SEQ.NEXTVAL, :1, :2, :3)"
             cursor.execute(sql, (place_data['name'], place_data['latitude'], 
-                               place_data['longitude'], datetime.now()))
+                               place_data['longitude']))
             self.db.connection.commit()
             return True
         except Exception as e:

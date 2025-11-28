@@ -10,10 +10,10 @@ class ReviewService:
     def create_review(self, review_data: dict):
         cursor = self.db.get_cursor()
         try:
-            sql = "INSERT INTO REVIEW (user_id, place_id, title, content, rating, created_at) VALUES (:1, :2, :3, :4, :5, :6)"
+            sql = "INSERT INTO REVIEW (review_id, user_id, place_id, title, content, rating) VALUES (REVIEW_SEQ.NEXTVAL, :1, :2, :3, :4, :5)"
             cursor.execute(sql, (review_data['user_id'], review_data['place_id'], 
                                review_data['title'], review_data['content'], 
-                               review_data['rating'], datetime.now()))
+                               review_data['rating']))
             self.db.connection.commit()
             return True
         except Exception as e:

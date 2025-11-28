@@ -10,10 +10,10 @@ class StoryService:
     def create_story(self, story_data: dict):
         cursor = self.db.get_cursor()
         try:
-            sql = "INSERT INTO STORY (user_id, image_url, content, latitude, longitude, created_at) VALUES (:1, :2, :3, :4, :5, :6)"
+            sql = "INSERT INTO STORY (story_id, user_id, image_url, content, latitude, longitude) VALUES (STORY_SEQ.NEXTVAL, :1, :2, :3, :4, :5)"
             cursor.execute(sql, (story_data['user_id'], story_data['image_url'], 
                                story_data['content'], story_data['latitude'], 
-                               story_data['longitude'], datetime.now()))
+                               story_data['longitude']))
             self.db.connection.commit()
             return True
         except Exception as e:

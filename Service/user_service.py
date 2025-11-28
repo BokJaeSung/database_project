@@ -10,9 +10,9 @@ class UserService:
     def create_user(self, user_data: dict):
         cursor = self.db.get_cursor()
         try:
-            sql = "INSERT INTO USER_T (id, password, name, email, created_at) VALUES (:1, :2, :3, :4, :5)"
+            sql = "INSERT INTO USER_T (user_id, id, password, name, email) VALUES (USER_SEQ.NEXTVAL, :1, :2, :3, :4)"
             cursor.execute(sql, (user_data['id'], user_data['password'], 
-                               user_data['name'], user_data['email'], datetime.now()))
+                               user_data['name'], user_data['email']))
             self.db.connection.commit()
             return True
         except Exception as e:

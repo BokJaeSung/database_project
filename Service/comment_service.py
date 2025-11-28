@@ -10,9 +10,9 @@ class CommentService:
     def create_comment(self, comment_data: dict):
         cursor = self.db.get_cursor()
         try:
-            sql = "INSERT INTO COMMENT_T (user_id, review_id, content, created_at) VALUES (:1, :2, :3, :4)"
+            sql = "INSERT INTO COMMENT_T (comment_id, user_id, review_id, content) VALUES (COMMENT_SEQ.NEXTVAL, :1, :2, :3)"
             cursor.execute(sql, (comment_data['user_id'], comment_data['review_id'], 
-                               comment_data['content'], datetime.now()))
+                               comment_data['content']))
             self.db.connection.commit()
             return True
         except Exception as e:

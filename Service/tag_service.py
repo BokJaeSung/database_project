@@ -9,7 +9,7 @@ class TagService:
     def create_tag(self, tag_data: dict):
         cursor = self.db.get_cursor()
         try:
-            sql = "INSERT INTO TAG (name) VALUES (:1)"
+            sql = "INSERT INTO TAG (tag_id, name) VALUES (TAG_SEQ.NEXTVAL, :1)"
             cursor.execute(sql, (tag_data['name'],))
             self.db.connection.commit()
             return True
