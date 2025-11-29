@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from Controller.user_controller import router as user_router
 from Controller.place_controller import router as place_router
 from Controller.review_controller import router as review_router
@@ -8,6 +9,15 @@ from Controller.like_controller import router as like_router
 from Controller.tag_controller import router as tag_router
 
 app = FastAPI()
+
+# CORS 설정 (프론트엔드 연동을 위해 필요)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # React 개발서버 주소
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # 라우터 등록
 app.include_router(user_router)
